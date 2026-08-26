@@ -1,0 +1,106 @@
+---
+layout: default
+---
+
+<main>
+
+    <aside class="sidebar">
+
+        <div class="photo">
+            <img src="{{ '/assets/photo.jpg' | relative_url }}" alt="Photo de {{ site.data.cv.name }}">
+        </div>
+
+        <section class="contact">
+            <h2>Contact</h2>
+
+            <p>{{ site.data.cv.email }}</p>
+            <p>{{ site.data.cv.phone }}</p>
+            <p>{{ site.data.cv.location }}</p>
+        </section>
+
+        <section>
+            <h2>Compétences</h2>
+
+            <ul>
+                {% for skill in site.data.cv.skills %}
+                    <li>{{ skill }}</li>
+                {% endfor %}
+            </ul>
+        </section>
+
+        <section>
+            <h2>Atouts</h2>
+
+            <ul>
+                {% for strength in site.data.cv.strengths %}
+                    <li>{{ strength }}</li>
+                {% endfor %}
+            </ul>
+        </section>
+
+    </aside>
+
+
+    <div class="content">
+
+        <header>
+            <h1>{{ site.data.cv.name }}</h1>
+            <p class="title">{{ site.data.cv.title }}</p>
+        </header>
+
+
+        <section>
+            <h2>Profil</h2>
+
+            <p>
+                {{ site.data.cv.profile }}
+            </p>
+        </section>
+
+
+        <section>
+            <h2>Expérience</h2>
+
+            {% for experience in site.data.cv.experience %}
+
+                <article class="item">
+
+                    <h3>{{ experience.role }}</h3>
+
+                    <p class="meta">
+                        {{ experience.company }} - {{ experience.year }}
+                    </p>
+
+                    {% if experience.description %}
+                        <p>{{ experience.description }}</p>
+                    {% endif %}
+
+                </article>
+
+            {% endfor %}
+
+        </section>
+
+
+        <section>
+            <h2>Formation</h2>
+
+            {% for education in site.data.cv.education %}
+
+                <article class="item">
+
+                    <h3>{{ education.degree }}</h3>
+
+                    <p class="meta">
+                        {{ education.school }} : {{ education.year }}
+                    </p>
+
+                </article>
+
+            {% endfor %}
+
+        </section>
+
+    </div>
+
+</main>

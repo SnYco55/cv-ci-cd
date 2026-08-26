@@ -1,0 +1,46 @@
+name: Jean Dupont
+title: Recherche de stage en informatique
+
+email: jean.dupont@example.com
+phone: "+32 470 12 34 56"
+location: Mons, Belgique
+
+profile: >
+  Développeur logiciel passionné par la conception d'applications,
+  l'automatisation et les pratiques DevOps.
+
+skills:
+  - Python
+  - Java
+  - Docker
+  - Git
+  - GitHub Actions
+
+strengths:
+  - Autonome
+  - Curieux
+  - Esprit d'équipe
+
+experience:
+  - company: Big IT
+    role: Software Developer
+    year: 2026
+    description: >
+      Développement et maintenance d'applications web
+      et automatisation des processus de déploiement.
+
+  - company: Example Corp
+    role: Junior Developer
+    year: 2024
+    description: >
+      Développement de fonctionnalités et participation
+      aux revues de code.
+
+education:
+  - degree: Master en Sciences Informatiques
+    school: Université de Mons
+    year: 2025 - 2027
+
+  - degree: Bachelor en Sciences Informatiques
+    school: Université de Mons
+    year: 2022 - 2025

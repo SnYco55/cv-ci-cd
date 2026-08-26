@@ -1,0 +1,8 @@
+title: "CV"
+description: "CV personnel"
+
+baseurl: "/cv-ci-cd"
+url: ""
+
+exclude: 
+  - README.md

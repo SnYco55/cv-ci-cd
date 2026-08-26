@@ -1,0 +1,209 @@
+/* =========================
+   Base
+   ========================= */
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    background: #e9ecef;
+    color: #212529;
+    font-family: Arial, Helvetica, sans-serif;
+    line-height: 1.6;
+}
+
+
+/* =========================
+   CV container
+   ========================= */
+
+main {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+
+    width: 210mm;
+    min-height: 297mm;
+
+    margin: 40px auto;
+    background: white;
+
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+
+/* =========================
+   Left column
+   ========================= */
+
+.sidebar {
+    padding: 35px 25px;
+    background: #263238;
+    color: white;
+}
+
+.photo {
+    width: 150px;
+    height: 150px;
+
+    margin: 0 auto 30px;
+
+    border-radius: 50%;
+    overflow: hidden;
+
+    background: #ddd;
+}
+
+.photo img {
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+}
+
+.sidebar h2 {
+    margin-top: 30px;
+    margin-bottom: 12px;
+
+    font-size: 15px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+    padding-bottom: 6px;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar li {
+    margin-bottom: 8px;
+}
+
+.contact p {
+    margin: 6px 0;
+    font-size: 14px;
+}
+
+
+/* =========================
+   Right column
+   ========================= */
+
+.content {
+    padding: 50px;
+}
+
+header {
+    margin-bottom: 45px;
+}
+
+header h1 {
+    margin: 0;
+
+    font-size: 42px;
+    line-height: 1.1;
+    text-transform: uppercase;
+}
+
+header .title {
+    margin-top: 8px;
+
+    font-size: 20px;
+    color: #607d8b;
+}
+
+
+/* =========================
+   Sections
+   ========================= */
+
+section {
+    margin-bottom: 40px;
+}
+
+section h2 {
+    margin-bottom: 20px;
+
+    font-size: 20px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+
+    color: #7b8387;
+
+    border-bottom: 2px solid #37474f;
+    padding-bottom: 8px;
+}
+
+
+/* =========================
+   Experience / education
+   ========================= */
+
+.item {
+    margin-bottom: 25px;
+}
+
+.item h3 {
+    margin: 0;
+
+    font-size: 18px;
+}
+
+.item .meta {
+    margin: 3px 0 8px;
+
+    font-size: 14px;
+    color: #78909c;
+}
+
+.item p {
+    margin: 0;
+}
+
+
+/* =========================
+   Responsive
+   ========================= */
+
+@media (max-width: 700px) {
+
+    main {
+        grid-template-columns: 1fr;
+
+        margin: 0;
+    }
+
+    .sidebar {
+        text-align: center;
+    }
+
+    .content {
+        padding: 30px;
+    }
+
+    header h1 {
+        font-size: 32px;
+    }
+}
+
+
+/* =========================
+   Print
+   ========================= */
+
+@media print {
+
+    body {
+        background: white;
+    }
+
+    main {
+        margin: 0;
+        box-shadow: none;
+    }
+}
