@@ -1,8 +1,8 @@
 title: "CV"
 description: "CV personnel"
 
-baseurl: "/cv-ci-cd"
-url: ""
+baseurl: "" # nom du repo
+url: "" # https://[USERNAME].github.io
 
 exclude: 
   - README.md
