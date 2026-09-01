@@ -1,1 +1,369 @@
-# cv-ci-cd
+# Automated CI and CD for a CV Website with GitHub Pages
+Note: You do not need to clone the repository. The whole practical session can be completed directly on GitHub.
+
+## Objective
+
+The goal of this practical session is to complete two GitHub Actions workflows:
+
+- `.github/workflows/ci.yml`
+- `.github/workflows/cd.yml`
+
+The two workflows have different roles:
+
+- **CI (Continuous Integration)** checks that the CV is valid and that the website can be correctly generated.
+- **CD (Continuous Deployment)** takes the website produced by CI and deploys it to GitHub Pages.
+
+The final pipeline should work like this:
+
+```
+cv.yml
+  ↓
+  CI
+  ├── Validate CV
+  ├── Build website
+  └── Upload website artifact
+  ↓
+CI succeeds
+  ↓
+  CD
+  ├── Download artifact
+  └── Deploy to GitHub Pages
+```
+
+**Important:** `cd.yml` must depend on `ci.yml` succeeding. It must not run independently on every push, and it must never deploy if CI has failed.
+
+Do not start `cd.yml` until `ci.yml` works correctly.
+
+---
+
+# 1. How the repository works
+
+Before creating the workflows, you should understand what happens when you modify the CV.
+
+The main files and folders are:
+
+```
+_data/cv.yml
+```
+
+This file contains the **CV data**: name, education, experience, skills, etc.
+
+It is not an HTML file. You only provide structured data in YAML.
+
+<br>
+
+The file `schemas/cv-schema.yml` defines the expected structure of `cv.yml`.
+
+It specifies which fields are required and what type of value they must contain.
+
+For example, a name should be a string, not a number.
+
+<br>
+
+The website itself is generated using **Jekyll**.
+
+Jekyll uses the data from `cv.yml` together with HTML templates. These templates use **Liquid**, which allows values from `cv.yml` to be inserted automatically into the HTML.
+
+When Jekyll builds the project:
+
+```
+cv.yml + templates
+        ↓
+      Jekyll
+        ↓
+      _site/
+        ↓
+ HTML / CSS / other static files
+```
+
+The `_site` directory therefore contains the actual static website that can be deployed to GitHub Pages.
+
+In this practical session, you will automate this process:
+
+```
+You edit cv.yml
+      ↓
+CI checks the CV
+      ↓
+Jekyll builds the website
+      ↓
+CI stores the generated website (as an artifact)
+      ↓
+CD retrieves it
+      ↓
+GitHub Pages publishes it
+```
+
+---
+
+# 2. Repository setup
+
+Before creating the workflows:
+
+1. Create your own repository from this repository using **Use this template**.
+2. Open **Settings → Pages**.
+3. Set **Source** to **GitHub Actions**.
+4. Go into _config.yml and set the baseurl and url as the comment explain it
+
+Commit your changes.
+
+---
+
+# 3. Continuous Integration - `ci.yml`
+
+The first workflow you must complete is:
+
+```
+.github/workflows/ci.yml
+```
+
+**!! (You must delete the job named placeholder in `ci.yml` before starting, same for workflow_dispatch) !!**
+
+The purpose of CI is to check that the CV is valid and that the website can be generated successfully.
+
+The workflow must run:
+
+- on every push;
+- on every pull request targeting `main`.
+
+## Required CI steps
+
+A CI job named build must perform the following steps **in this order**.
+
+### 1. Checkout the repository
+
+Retrieve the repository contents on the GitHub Actions runner.
+
+Use:
+
+```
+actions/checkout
+```
+
+### 2. Validate the CV
+
+The workflows must use the `GrantBirki/json-yaml-validate` action to validate the `_data/cv.yml` file against the yaml schema `schemas/cv-schema.yml`
+
+**Action details : https://github.com/marketplace/actions/json-yaml-validate**
+
+The workflow must fail if:
+
+- `cv.yml` contains invalid YAML;
+- `cv.yml` does not respect the schema.
+
+(You will test that later)
+
+### 3. Set up Ruby
+
+The project uses Ruby/Jekyll.
+
+Use:
+
+```
+ruby/setup-ruby
+```
+
+**Action details : https://github.com/marketplace/actions/setup-ruby-jruby-and-truffleruby**
+
+(Enable bundler caching)
+
+### 4. Build the website
+
+Run the project's build command :
+
+```
+bundle exec jekyll build
+```
+
+The build generate the static website in:
+
+```
+_site/
+```
+
+The CI job must fail if the website cannot be generated (next step).
+
+### 5. Check the generated website
+
+Verify that the expected website files have actually been generated.
+
+For example, check that `_site/index.html` exists with this command :
+
+```
+test -f _site/index.html
+```
+
+### 6. Upload the generated website
+
+To upload `_site` as a GitHub Actions artifact.
+
+Use:
+
+```
+actions/upload-artifact
+```
+
+**Action details : https://github.com/marketplace/actions/upload-a-build-artifact**
+
+Give the artifact an explicit name (ex: jekyll-site) and the proper path (here its: ./_site)
+
+You will need this exact name later in `cd.yml`.
+
+**Important:** `cd.yml` workflow must deploy this artifact. It must not build the website again.
+
+---
+
+# 4. Continuous Deployment - `cd.yml`
+
+Only start this part once your CI workflow works correctly.
+
+The purpose of CD is to deploy the website generated by CI to GitHub Pages.
+
+**!! (You must delete the job named placeholder in `cd.yml` before starting, same for workflow_dispatch) !!**
+
+## Important requirement
+
+CD must use the website produced by CI.
+
+It must **not rebuild the website**.
+
+The final process must therefore be:
+
+```
+CI
+ ↓
+Build website
+ ↓
+Upload artifact
+ ↓
+CI succeeds
+ ↓
+CD starts
+ ↓
+Download CI artifact
+ ↓
+Deploy artifact
+```
+
+## Required CD steps
+
+A CD job named deploy must perform the following steps **in this order**.
+
+### 1. Trigger CD after CI
+
+CD must start when the CI workflow completes.
+
+It must only continue when:
+
+- the CI workflow succeeded;
+- the CI workflow ran for `main`.
+
+Use the GitHub Actions `workflow_run` event.
+
+**https://docs.github.com/fr/actions/reference/workflows-and-actions/events-that-trigger-workflows#workflow_run**
+
+### 2. Download the CI artifact
+
+Retrieve the artifact produced by the corresponding CI run.
+
+Use:
+
+```
+actions/download-artifact
+```
+
+**Action details : https://github.com/marketplace/actions/download-a-build-artifact**
+
+The artifact must come from the **same CI run** that triggered the CD workflow.
+
+### 3. Upload the Pages artifact
+
+Prepare the downloaded website for GitHub Pages.
+
+Use:
+
+```
+actions/upload-pages-artifact
+```
+
+**Action details : https://github.com/marketplace/actions/upload-github-pages-artifact**
+
+### 4. Deploy to GitHub Pages
+
+Deploy the Pages artifact.
+
+Use:
+
+```
+actions/deploy-pages
+```
+
+**Action details : https://github.com/marketplace/actions/deploy-github-pages-site**
+
+Configure only the `permissions` required for GitHub Pages deployment.
+
+Also configure a `concurrency` group to prevent overlapping deployments.
+
+---
+
+# 5. Testing your pipeline
+
+Once both workflows are implemented, test the complete pipeline.
+
+You can go to Actions to check if your workflows succed or not.
+
+## 5.1 Test the initial CV
+
+- Does the complete pipeline succeed with `cv.yml`? Do you notice any errors or inconsistencies ?
+    
+    → you can check the CV at https://[YOUR_USERNAME].github.io/[REPO_NAME]/
+    
+
+## 5.2 Test with `cv_broken.yml`
+
+A file named `cv_broken.yml` is provided. It contains several intentional errors.
+
+Copy the content of `cv_broken.yml` into your `_data/cv.yml` and run the pipeline again.
+
+For each error you find:
+
+- Was it detected by the CI/CD pipeline?
+- If it was detected, fix it and explain why it caused an error.
+- If it was not detected, explain why and suggest how the pipeline could be improved to detect this type of error.
+
+## 5.3 Personalize your CV
+
+You can now modify `_data/cv.yml` with your own information.
+
+Commit your changes, then verify that your CV is correctly built and deployed to GitHub Pages **(on https://[YOUR_USERNAME].github.io/[REPO_NAME]/)**
+
+---
+
+# Useful hints
+
+## Permissions and concurrency for CD
+
+```yaml
+permissions:
+  actions: read
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+```
+
+## Download the artifact from the CI run
+
+```yaml
+- name: Download site artifact from CI
+  uses: actions/download-artifact@v4
+  with:
+    name: jekyll-site # must match the artifact name uploaded by upload-artifact in CI
+    path: ./_site
+    github-token: ${{ secrets.GITHUB_TOKEN }}
+    repository: ${{ github.repository }}
+    run-id: ${{ github.event.workflow_run.id }}
+```
