@@ -1,8 +1,11 @@
 name: Jean Dupont
 title: Recherche de stage en informatique
 
+photo: '/assets/photo.jpg'
+
 email: jean.dupont@example.com
-phone: +32 470 12 34 56
+phone: 0470123456
+
 location: Mons, Belgique
 
 profile: |
