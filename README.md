@@ -128,7 +128,7 @@ The workflow must run:
 
 ## Required CI steps
 
-A CI job named build must perform the following steps **in this order**.
+A CI job named `build` must perform the following steps **in this order**.
 
 **( runs-on: ubuntu-latest )**
 
