@@ -1,0 +1,59 @@
+---
+name:
+  type: string
+  required: true
+
+title:
+  type: string
+  required: true
+
+photo:
+  type: string
+  required: true
+
+email:
+  type: string
+  required: true
+
+phone:
+  type: number
+  required: false
+
+location:
+  type: string
+  required: true
+
+profile:
+  type: string
+  required: true
+
+skills:
+  - type: string
+
+strengths:
+  - type: string
+
+experience:
+  - company:
+      type: string
+      required: true
+    role:
+      type: string
+      required: true
+    year:
+      type: number
+      required: true
+    description:
+      type: string
+      required: true
+
+education:
+  - degree:
+      type: string
+      required: true
+    school:
+      type: string
+      required: true
+    year:
+      type: string
+      required: true
