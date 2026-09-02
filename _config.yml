@@ -1,7 +1,7 @@
 title: "CV"
 description: "CV personnel"
 
-baseurl: "" # name of the repository
+baseurl: "" # /name-of-the-repo
 url: "" # https://[USERNAME].github.io
 
 exclude: 
