@@ -330,6 +330,8 @@ You can go to Actions to check if your workflows succed or not.
     
     → you can check the CV at https://[YOUR_USERNAME].github.io/[REPO_NAME]/
     
+### 5.1.1 Responses
+
 
 ## 5.2 Test with `cv_broken.yml`
 
@@ -342,6 +344,9 @@ For each error you find:
 - Was it detected by the CI/CD pipeline?
 - If it was detected, fix it and explain why it caused an error.
 - If it was not detected, explain why and suggest how the pipeline could be improved to detect this type of error.
+
+### 5.2.1 Responses
+
 
 ## 5.3 Personalize your CV
 
