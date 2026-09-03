@@ -1,5 +1,7 @@
 name: CD
 
+# Delete workflow_dispatch and the placeholder job before modifying this file
+
 on:
   workflow_dispatch:
 
