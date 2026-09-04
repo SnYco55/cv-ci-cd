@@ -329,6 +329,8 @@ You can go to Actions to check if your workflows succed or not.
 - Does the complete pipeline succeed with `cv.yml`? Do you notice any errors or inconsistencies ?
     
     → you can check the CV at https://[YOUR_USERNAME].github.io/[REPO_NAME]/
+
+  **(Reload the page after a new deployment to apply modifications)**
     
 ### 5.1.1 Responses
 
@@ -353,6 +355,8 @@ For each error you find:
 You can now modify `_data/cv.yml` with your own information.
 
 Commit your changes, then verify that your CV is correctly built and deployed to GitHub Pages **(on https://[YOUR_USERNAME].github.io/[REPO_NAME]/)**
+
+**(Reload the page after a new deployment to apply modifications)**
 
 ---
 
